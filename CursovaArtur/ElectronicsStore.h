@@ -21,13 +21,11 @@ public:
 	bool loginToStore(std::string& name, std::string& password);
 	std::shared_ptr<Customer> getUser() noexcept;
 	const std::unordered_map<std::string, std::shared_ptr<Category>>& returnMapCategories();
-	
+	void addGlobalOrders(std::pair<int, std::shared_ptr<Order>>& other);
 private:
 	std::unordered_map<int, std::shared_ptr<Customer>> customers;
 	std::unordered_map <std::string, int> customersTOid;
-	std::unordered_map<int, Order> orders;
+	std::unordered_map<int, std::shared_ptr<Order>> orders;
 	std::unordered_map<std::string, std::shared_ptr<Category>> categories;
 	std::shared_ptr<Customer> userSession;
-	
-};
-// ЛОгін -> users->password == passwor
+}; 

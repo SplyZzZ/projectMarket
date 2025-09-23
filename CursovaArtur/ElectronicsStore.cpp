@@ -102,3 +102,9 @@ const std::unordered_map<std::string, std::shared_ptr<Category>>& ElectronicsSto
 {
 	return categories;
 }
+
+void ElectronicsStore::addGlobalOrders(std::pair<int, std::shared_ptr<Order>>& other)
+{
+	orders[other.first] = other.second;
+}
+                                               

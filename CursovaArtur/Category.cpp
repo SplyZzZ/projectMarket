@@ -5,7 +5,7 @@ Category::Category(std::string& name, std::string& description) : name(name), de
     ID = ++Unik;
 }
 
-void Category::AddProduct(std::shared_ptr<Product> other) noexcept
+void Category::AddProduct(std::shared_ptr<Product>& other) noexcept
 {
 	productMap[other->getID()] = other;
 }

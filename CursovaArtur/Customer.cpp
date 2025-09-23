@@ -12,10 +12,9 @@ Customer::Customer(std::string& name, std::string& contactInformation, std::stri
 	admin = false;
 }
 
-std::pair<int, std::shared_ptr<Order>> Customer::AddOrder(std::array<Category, 10>& listCategory)
+std::pair<int, std::shared_ptr<Order>> Customer::AddOrder(std::shared_ptr<Customer>& user)
 {
-	customerCart.AddProduct(listCategory);
-	 std::shared_ptr<Order> newOrder = std::make_shared<Order>(customerCart, name);
+	 std::shared_ptr<Order> newOrder = std::make_shared<Order>(user);
 	 std::pair<int, std::shared_ptr<Order>> tmp(newOrder->getID(), newOrder);
 	 myOrders.push_back(newOrder->getID());
 	 return tmp;
