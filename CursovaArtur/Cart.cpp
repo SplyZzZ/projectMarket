@@ -4,7 +4,7 @@
 Cart::Cart() : totalCount(0)
 {
 };
-void Cart::AddProduct(const std::unordered_map<std::string, std::shared_ptr<Category>>& other) noexcept
+bool Cart::AddProduct(const std::unordered_map<std::string, std::shared_ptr<Category>>& other) noexcept
 {
 			for (auto it = other.begin(); it != other.end(); ++it)
 			{
@@ -14,19 +14,17 @@ void Cart::AddProduct(const std::unordered_map<std::string, std::shared_ptr<Cate
 			std::string option;
 			std::cin.ignore();
 			std::getline(std::cin, option);
-			
+			if (other.find(option) == other.end()) {return false;}
 			other.at(option)->GetListProduct();
 			int towarID;
 			std::cin >> towarID;
 			productList.push_back(other.at(option)->GetProduct(towarID));
 			totalCount += other.at(option)->GetProduct(towarID)->getPrice();
-			std::cout << "Greate!";
-			Sleep(4000);
-			system("CLS");
+			return true;
 }
-void Cart::DeleteProduct() noexcept
+bool Cart::DeleteProduct() noexcept
 {
-	if (productList.size() == 0) { std::cout << "Shopping cart empty"; return; }
+	if (productList.size() == 0) { return false; }
 	for (size_t i = 0; i < productList.size(); ++i)
 	{
 		std::cout << i + 1 << " ";
@@ -37,7 +35,7 @@ void Cart::DeleteProduct() noexcept
 	std::cin >> option; 
 	totalCount -= productList[option - 1]->getPrice();
 	productList.erase(productList.begin() + (option - 1));
-	std::cout << "Item successfully deleted";
+	return true;
 }
 double Cart::ResulPrice() const noexcept
 {
@@ -57,4 +55,13 @@ void Cart::Clear() noexcept
 	totalCount = 0;
 	productList.clear();
 	productList.shrink_to_fit();
+}
+
+void Cart::ListCart() const noexcept
+{
+	if (productList.size() == 0) { return; }
+	for (size_t i = 0; i < productList.size(); ++i)
+	{
+		std::cout << productList[i] << std::endl;
+	}
 }

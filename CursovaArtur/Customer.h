@@ -9,7 +9,7 @@ class Customer
 public:
 	Cart customerCart;
 	Customer(std::string& name, std::string& contactInformation, std::string& password);
-	std::pair<int,std::shared_ptr<Order>> AddOrder(std::array<Category, 10>& listCategory);
+	std::pair<int, std::shared_ptr<Order>> AddOrder(std::shared_ptr<Customer>& user);
 	void getInformationCustomer() const noexcept;
 	int DeleteOrder();
 	int getID() const;

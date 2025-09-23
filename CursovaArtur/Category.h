@@ -6,7 +6,7 @@ class Category
 {
 public:
 	Category(std::string& name, std::string& description);
-	void AddProduct(std::shared_ptr<Product> other) noexcept;
+	void AddProduct(std::shared_ptr<Product>& other) noexcept;
 	void DeleteProduct(const int ID) noexcept;
 	void GetListProduct() const noexcept;
 	std::shared_ptr<Product> GetProduct(int ID)  noexcept;

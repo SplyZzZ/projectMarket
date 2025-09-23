@@ -5,10 +5,11 @@
 #include "Payment.h"
 
 class Cart;
+
 class Order
 {
 public:
-	Order(Cart& customerCarts, std::string& nameCustomer);
+	Order(std::shared_ptr<Customer>& user);
 	double GetSum();
 	void SetNewStatusOrder(int selection) noexcept;
 	int getID() const noexcept;
@@ -16,6 +17,7 @@ private:
 
 	static int Unic;
 	int ID;
+	Payment paymentOrder;
 	double sum;
 	std::string name;
 	std::vector<std::shared_ptr<Product>> productPay;

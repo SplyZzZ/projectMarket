@@ -1,26 +1,26 @@
 ﻿#include <iostream>
 #include "ElectronicsStore.h"
 #include "argon2.h"
-#include <SFML/Audio.hpp>
+//#include <SFML/Audio.hpp>
 #include <thread>
 #include <chrono>
-void playMusic() 
-{
-    sf::Music music;
-    if (!music.openFromFile("background1.ogg")) 
-    {
-        std::cout << "Не вдалося завантажити музику!" << std::endl;
-        return;
-    }                        
-
-    music.setLooping(true);
-    music.play();
-
-    while (music.getStatus() == sf::SoundSource::Status::Playing) 
-    {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    }
-}
+//void playMusic() 
+//{
+//    sf::Music music;
+//    if (!music.openFromFile("background1.ogg")) 
+//    {
+//        std::cout << "Не вдалося завантажити музику!" << std::endl;
+//        return;
+//    }                        
+//
+//    music.setLooping(true);
+//    music.play();
+//
+//    while (music.getStatus() == sf::SoundSource::Status::Playing) 
+//    {
+//        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+//    }
+//}
 namespace ShopUI
 {
     void showMainMenu();
@@ -37,8 +37,7 @@ namespace ShopUI
 
 int main() {
     ElectronicsStore store;
-    std::thread musicThread(playMusic);
-    std::system("AcmM.gif");
+  
     setlocale(LC_ALL, "UA");
     int choice;
     do {
@@ -220,18 +219,56 @@ int main() {
                 case 1:
                 {
                   
-                    store.getUser()->customerCart.AddProduct(store.returnMapCategories());
+                    std::cout << store.getUser()->customerCart.AddProduct(store.returnMapCategories()) ? "Товар успішно додано в корзину! " : "Помилка!";
+                    break;
+                }
+                case 2:
+                {
+                   std::cout <<  (store.getUser()->customerCart.DeleteProduct()) ?  "Item successfully deleted" : "Shopping cart empty";
+                   break;
+                }
+                case 3:
+                {
+                    store.getUser()->customerCart.ListCart();
+                    break;
+                }
+                case 4:
+                {
+                   std::cout << store.getUser()->customerCart.ResulPrice() << " $";
+                   break;
                 }
                 default:
+                {
+                    std::cout << "Не правильний ввід!!";
+                    tmp = 0;
                     break;
+                }
                 }
             }
             break;
         }
         case 5:
         {
-            ShopUI::ordersMenu();
-            break;
+            int tmp = 1;
+            while (tmp != 0)
+            {
+                ShopUI::ordersMenu();
+                std::cin >> tmp;
+                switch (tmp)
+                {
+                case 1:
+                {
+                    std::shared_ptr<Customer> tempUser = store.getUser();
+                    std::pair<int, std::shared_ptr<Order>> tempPairOrder = tempUser->AddOrder(tempUser);
+                    store.addGlobalOrders(tempPairOrder);
+                }
+                case 2:
+                {
+
+                }
+                }
+                break;
+            }
         }
         case 6:
         {
@@ -258,6 +295,7 @@ int main() {
 
     } while (choice != 0);
 
+   
     return 0;
 }
 void ShopUI::showMainMenu() {
@@ -307,9 +345,8 @@ void ShopUI::cartMenu() {
 void ShopUI::ordersMenu() {
     std::cout << "\n--- Замовлення та оплати ---\n";
     std::cout << "1. Створити замовлення\n";
-    std::cout << "2. Змінити статус замовлення\n";
-    std::cout << "3. Провести оплату\n";
-    std::cout << "4. Переглянути замовлення\n";
+    std::cout << "2. Провести оплату\n";
+    std::cout << "3. Переглянути замовлення\n";
     std::cout << "0. Назад\n";
 }
 
