@@ -1,4 +1,4 @@
-#include "Order.h"
+﻿#include "Order.h"
 #include "Cart.h"
 #include "Payment.h"
 #include <array>
@@ -29,5 +29,18 @@ void Order::SetNewStatusOrder(int selection) noexcept
 int Order::getID() const noexcept
 {
 	return ID;
+}
+void Order::GetOrderInformation() const noexcept
+{
+	std::cout << "ID замовлення: " << ID << std::endl;
+	std::cout << "Ім'я замовника: " << name << std::endl;
+	std::cout << "Сума замлення: " << sum << std::endl;
+	std::cout << "Статус замовлення: " << (status == 1) ? "New" : (status == 2) ? "Payed" : (status == 3) ? "Send" : "Delivered";
+	std::cout << "\nПерелік товарів:\n";
+	for (size_t i = 0; i < productPay.size(); ++i)
+	{
+		productPay[i]->getInformationProduct();
+	}
+
 }
 int Order::Unic = 0;

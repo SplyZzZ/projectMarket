@@ -6,8 +6,8 @@ class Payment
 {
 public:
 	Payment();
-	void InitializePayment(std::shared_ptr<Order>& order) noexcept;
-	void approvePay(std::shared_ptr<Order>& order);
+	bool InitializePayment(std::shared_ptr<Order>& order) noexcept;
+	bool approvePay(std::shared_ptr<Order>& order);
 private:
 	static int Unik;
 	int ID;
