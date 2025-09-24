@@ -13,11 +13,13 @@ public:
 	double GetSum();
 	void SetNewStatusOrder(int selection) noexcept;
 	int getID() const noexcept;
+	void GetOrderInformation() const noexcept;
+	Payment paymentOrder;
 private:
 
 	static int Unic;
 	int ID;
-	Payment paymentOrder;
+	
 	double sum;
 	std::string name;
 	std::vector<std::shared_ptr<Product>> productPay;

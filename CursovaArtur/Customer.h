@@ -11,10 +11,12 @@ public:
 	Customer(std::string& name, std::string& contactInformation, std::string& password);
 	std::pair<int, std::shared_ptr<Order>> AddOrder(std::shared_ptr<Customer>& user);
 	void getInformationCustomer() const noexcept;
+	void getUserOrderList() const noexcept;
 	int DeleteOrder();
+	std::shared_ptr<Order> getOrder(size_t ID) noexcept;
 	int getID() const;
 	std::string getName() noexcept;
-	bool checkPassword();
+	
 	
 
 private:
@@ -24,5 +26,5 @@ private:
 	std::string name;
 	std::string contactInformation;
 	bool admin;
-	std::vector<int> myOrders;
+	std::unordered_map<int, std::shared_ptr<Order>> myOrders;
 };

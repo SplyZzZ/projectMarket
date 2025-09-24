@@ -35,7 +35,7 @@ size_t ElectronicsStore::getClientsSize() const noexcept
 void ElectronicsStore::addProducts(std::string& name) noexcept
 {
 	std::shared_ptr<Product> tmp = std::make_shared<Product>();
-	tmp->setInformationProduct();
+	tmp->setInformationProduct();	
 	categories[name]->AddProduct(tmp);
 }
 void ElectronicsStore::getCategoiesList() const noexcept
@@ -102,9 +102,8 @@ const std::unordered_map<std::string, std::shared_ptr<Category>>& ElectronicsSto
 {
 	return categories;
 }
-
 void ElectronicsStore::addGlobalOrders(std::pair<int, std::shared_ptr<Order>>& other)
 {
 	orders[other.first] = other.second;
 }
-                                               
+                                                
