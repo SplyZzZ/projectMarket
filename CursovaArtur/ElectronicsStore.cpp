@@ -34,9 +34,42 @@ size_t ElectronicsStore::getClientsSize() const noexcept
 }
 void ElectronicsStore::addProducts(std::string& name) noexcept
 {
-	std::shared_ptr<Product> tmp = std::make_shared<Product>();
-	tmp->setInformationProduct();	
-	categories[name]->AddProduct(tmp);
+	std::cout << "Виберіть товар який бажаєте добавити: ";
+	ProductType type;
+	switch (type)
+	{
+	case ProductType::Phone:
+	{
+		std::shared_ptr<Product> newProduct = FactoryMethod::initiProductNew(ProductType::Phone);
+		newProduct->setInformationProduct();
+		categories["Phone"]->AddProduct(newProduct);
+		break;
+	}
+	case ProductType::TV:
+	{
+		std::shared_ptr<Product> newProduct = FactoryMethod::initiProductNew(ProductType::TV);
+		newProduct->setInformationProduct();
+		categories["TV"]->AddProduct(newProduct);
+		break;
+	}
+	case ProductType::Exercise:
+	{
+		std::shared_ptr<Product> newProduct = FactoryMethod::initiProductNew(ProductType::Exercise);
+		newProduct->setInformationProduct();
+		categories["Exercise"]->AddProduct(newProduct);
+		break;
+	}
+	case ProductType::FleshDrive:
+	{
+		std::shared_ptr<Product> newProduct = FactoryMethod::initiProductNew(ProductType::FleshDrive);
+		newProduct->setInformationProduct();
+		categories["FleshDrive"]->AddProduct(newProduct);
+		break;
+	}
+	default:
+		break;
+	}
+
 }
 void ElectronicsStore::getCategoiesList() const noexcept
 {
@@ -48,7 +81,7 @@ void ElectronicsStore::getCategoiesList() const noexcept
 	for (auto it = categories.begin(); it != categories.end(); ++it)
 	{
 		std::shared_ptr<Category> category = it->second;
-		category->getName();
+		std::cout << category->getName() << " ";
 	}
 }
 void ElectronicsStore::deleteProduct(std::string& name) noexcept
