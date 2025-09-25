@@ -16,9 +16,6 @@ public:
 	std::shared_ptr<Order> getOrder(size_t ID) noexcept;
 	int getID() const;
 	std::string getName() noexcept;
-	
-	
-
 private:
 	static int Unic;
 	int ID;

@@ -19,7 +19,7 @@ bool Cart::AddProduct(const std::unordered_map<std::string, std::shared_ptr<Cate
 			int towarID;
 			std::cin >> towarID;
 			productList.push_back(other.at(option)->GetProduct(towarID));
-			totalCount += other.at(option)->GetProduct(towarID)->getPrice();
+			totalCount += other.at(option)->GetProduct(towarID)->GetPrice();
 			return true;
 }
 bool Cart::DeleteProduct() noexcept
@@ -28,12 +28,12 @@ bool Cart::DeleteProduct() noexcept
 	for (size_t i = 0; i < productList.size(); ++i)
 	{
 		std::cout << i + 1 << " ";
-		productList[i]->getInformationProduct();
+		productList[i]->GetInformationProduct();
 	}
 	std::cout << "Enter the number of the item you wish to delete: ";
 	size_t option = 0;
 	std::cin >> option; 
-	totalCount -= productList[option - 1]->getPrice();
+	totalCount -= productList[option - 1]->GetPrice();
 	productList.erase(productList.begin() + (option - 1));
 	return true;
 }

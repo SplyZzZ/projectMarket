@@ -7,7 +7,7 @@ Category::Category(std::string& name, std::string& description) : name(name), de
 
 void Category::AddProduct(std::shared_ptr<Product>& other) noexcept
 {
-	productMap[other->getID()] = other;
+	productMap[other->GetID()] = other;
 }
 
 void Category::DeleteProduct(const int ID) noexcept
@@ -20,7 +20,7 @@ void Category::GetListProduct() const noexcept
     for (auto it = productMap.begin(); it != productMap.end(); ++it)
     {                      
         std::shared_ptr<Product> product = it->second; 
-        product->getInformationProduct();   
+        product->GetInformationProduct();   
     }
 }
 

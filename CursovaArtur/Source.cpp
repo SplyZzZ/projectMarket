@@ -63,7 +63,7 @@ int main() {
                         std::cout << "Введіть назву категорії в яку бажаєте добавити товар: ";
                         store.getCategoiesList();
                         std::cin >> selection;
-                        store.addProducts(selection);
+                        /*store.addProducts(selection);*/
                     }
                     break;
                 }

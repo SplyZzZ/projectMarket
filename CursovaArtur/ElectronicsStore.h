@@ -12,7 +12,7 @@ public:
 	bool deleteCategory(std::string& name) noexcept;
 	size_t getCategorySize() const noexcept;
 	size_t getClientsSize() const noexcept;
-	void addProducts(std::string& name) noexcept;
+	void addProducts() noexcept;
 	void getCategoiesList() const noexcept;
 	void deleteProduct(std::string& name) noexcept;
 	void getProductList(std::string& name)  noexcept;
@@ -22,6 +22,7 @@ public:
 	std::shared_ptr<Customer> getUser() noexcept;
 	const std::unordered_map<std::string, std::shared_ptr<Category>>& returnMapCategories();
 	void addGlobalOrders(std::pair<int, std::shared_ptr<Order>>& other);
+	void PrintTypeProduct() const noexcept;
 private:
 	std::unordered_map<int, std::shared_ptr<Customer>> customers;
 	std::unordered_map <std::string, int> customersTOid;

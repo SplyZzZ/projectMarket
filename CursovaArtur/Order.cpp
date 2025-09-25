@@ -39,7 +39,7 @@ void Order::GetOrderInformation() const noexcept
 	std::cout << "\nПерелік товарів:\n";
 	for (size_t i = 0; i < productPay.size(); ++i)
 	{
-		productPay[i]->getInformationProduct();
+		productPay[i]->GetInformationProduct();
 	}
 
 }

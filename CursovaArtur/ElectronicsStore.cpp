@@ -1,4 +1,6 @@
 ﻿#include "ElectronicsStore.h"
+#include "Factory.h"
+#include "Security.h"
 
 bool ElectronicsStore::addCustomer(std::string& name, std::string& contactInformation, std::string& password)
 {
@@ -16,8 +18,8 @@ bool ElectronicsStore::deleteCustomer(int ID) noexcept
 bool ElectronicsStore::addCategory(std::string& name, std::string& description) noexcept
 {
 	std::shared_ptr<Category> tmp = std::make_shared<Category>(name, description);
-	if (categories.find(tmp->getName()) == categories.end()) { categories[tmp->getName()] = tmp; return true; }
-	return false;	
+	categories[tmp->getName()] = tmp; 
+	return true; 
 }
 bool ElectronicsStore::deleteCategory(std::string& name) noexcept
 {
@@ -32,44 +34,23 @@ size_t ElectronicsStore::getClientsSize() const noexcept
 	return customers.size();
 	
 }
-void ElectronicsStore::addProducts(std::string& name) noexcept
+void ElectronicsStore::addProducts() noexcept
 {
+	PrintTypeProduct();
 	std::cout << "Виберіть товар який бажаєте добавити: ";
-	ProductType type;
-	switch (type)
+	std::string selection = ConsoleHelper::readLine();
+	auto iterator = productRegisty.find(selection);
+	if (iterator == productRegisty.end()) { throw std::out_of_range("Не існує такого типу"); }
+	auto& meta = iterator->second;
+	std::shared_ptr<Product> newProduct = meta.FactoryMethod();
+	newProduct->SetInformationProduct();
+	if(!(StoreUtils::searchCategory(categories, meta.category)))
 	{
-	case ProductType::Phone:
-	{
-		std::shared_ptr<Product> newProduct = FactoryMethod::initiProductNew(ProductType::Phone);
-		newProduct->setInformationProduct();
-		categories["Phone"]->AddProduct(newProduct);
-		break;
+		std::cout << "Введіть опис категорії: ";
+		std::string description = ConsoleHelper::readLine();
+		addCategory(meta.category, description);
 	}
-	case ProductType::TV:
-	{
-		std::shared_ptr<Product> newProduct = FactoryMethod::initiProductNew(ProductType::TV);
-		newProduct->setInformationProduct();
-		categories["TV"]->AddProduct(newProduct);
-		break;
-	}
-	case ProductType::Exercise:
-	{
-		std::shared_ptr<Product> newProduct = FactoryMethod::initiProductNew(ProductType::Exercise);
-		newProduct->setInformationProduct();
-		categories["Exercise"]->AddProduct(newProduct);
-		break;
-	}
-	case ProductType::FleshDrive:
-	{
-		std::shared_ptr<Product> newProduct = FactoryMethod::initiProductNew(ProductType::FleshDrive);
-		newProduct->setInformationProduct();
-		categories["FleshDrive"]->AddProduct(newProduct);
-		break;
-	}
-	default:
-		break;
-	}
-
+	categories[meta.category]->AddProduct(newProduct);
 }
 void ElectronicsStore::getCategoiesList() const noexcept
 {
@@ -138,5 +119,13 @@ const std::unordered_map<std::string, std::shared_ptr<Category>>& ElectronicsSto
 void ElectronicsStore::addGlobalOrders(std::pair<int, std::shared_ptr<Order>>& other)
 {
 	orders[other.first] = other.second;
+}
+
+void ElectronicsStore::PrintTypeProduct() const noexcept
+{
+	for (const auto& [key, meta] : productRegisty)
+	{
+		std::cout << key << " - " << meta.typeProduct << std::endl;
+	}
 }
                                                 
