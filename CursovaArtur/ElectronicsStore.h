@@ -2,8 +2,8 @@
 #include "Category.h"
 #include "Customer.h"
 #include "Order.h"
-
-class ElectronicsStore
+#include "Observer.h"
+class ElectronicsStore : public IObserver
 {
 public:
 	bool addCustomer(std::string& name, std::string& contactInformation, std::string& password);

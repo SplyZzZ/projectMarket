@@ -161,6 +161,7 @@
     <ClInclude Include="exercise.h" />
     <ClInclude Include="Factory.h" />
     <ClInclude Include="FleshDrive.h" />
+    <ClInclude Include="Observer.h" />
     <ClInclude Include="Order.h" />
     <ClInclude Include="Payment.h" />
     <ClInclude Include="Phone.h" />

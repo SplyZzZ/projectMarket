@@ -2,9 +2,9 @@
 #include <array>
 #include "Category.h"
 #include "Cart.h"
-
+#include "Observer.h"
 class Order;
-class Customer
+class Customer : public IObserver
 {
 public:
 	Cart customerCart;
@@ -16,6 +16,7 @@ public:
 	std::shared_ptr<Order> getOrder(size_t ID) noexcept;
 	int getID() const;
 	std::string getName() noexcept;
+	void UpDate(size_t status, int ID) override;
 private:
 	static int Unic;
 	int ID;

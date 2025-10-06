@@ -39,11 +39,10 @@ void Customer::getUserOrderList() const noexcept
 int Customer::DeleteOrder()
 {
 	if (myOrders.size() == 0) return 1;
-	for (size_t i = 0; i < myOrders.size(); i++)
-	{
-		std::cout << myOrders[i] << " ";
+	for (const auto& [id, order] : myOrders) {
+		std::cout << "ID: " << id << " ";
 	}
-	std::cout << "Введіть ID ордера: ";
+	std::cout << "\nВведіть ID ордера: ";
 	int selection = 0;
 	std::cin >> selection;
 	return selection;
@@ -63,5 +62,13 @@ std::string Customer::getName() noexcept
 {
 	return name;
 }
+
+void Customer::UpDate(size_t status, int ID)
+{
+	std::cout << "Статус вашого замволення " << getOrder(ID) << " змінено на " << ((status == 1) ? "New" : (status == 2) ? "Payed" : (status == 3) ? "Send" : "Delivered")
+		<< "\n";
+}
+
+
 
 int Customer::Unic = 0;

@@ -19,7 +19,7 @@ bool Payment::InitializePayment(std::shared_ptr<Order>& order) noexcept
 bool Payment::approvePay(std::shared_ptr<Order>& order)
 {
 	std::cout << "You have 5 minutes to confirm your order \n1 - confirm\n2 - cancel ";
-	int selection;
+	size_t selection;
 	std::cin >> selection;
 	if (selection == 2) return false;
 	transactionStatus = true;

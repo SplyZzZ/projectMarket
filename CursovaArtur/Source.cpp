@@ -4,6 +4,7 @@
 //#include <SFML/Audio.hpp>
 #include <thread>
 #include <chrono>
+#include "Security.h"
 //void playMusic() 
 //{
 //    sf::Music music;
@@ -45,25 +46,27 @@ int main() {
         ShopUI::showMainMenu();
         std::cin >> choice;
 
-        switch (choice) {
-        case 1: {
+        switch (choice) 
+        {
+        case 1: 
+        {
             int tmp = 1;
-            while (tmp != 0) {
+            while (tmp != 0) 
+            {
                 ShopUI::productsMenu();
                 std::cin >> tmp;
-                switch (tmp) {
-                case 1: {
+                switch (tmp) 
+                {
+                case 1: 
+                {
                     if (store.getCategorySize() == 0) {
                         std::cout << "Спершу створіть категорію!";
                         tmp = 0;
                         break;
                     }
-                    else {
-                        std::string selection;
-                        std::cout << "Введіть назву категорії в яку бажаєте добавити товар: ";
-                        store.getCategoiesList();
-                        std::cin >> selection;
-                        /*store.addProducts(selection);*/
+                    else 
+                    {
+                        store.addProducts();
                     }
                     break;
                 }
@@ -110,35 +113,33 @@ int main() {
             while (tmp != 0) {
                 ShopUI::categoriesMenu();
                 std::cin >> tmp;
-                switch (tmp) {
-                case 1: {
+                switch (tmp) 
+                {
+                case 1: 
+                {
                     std::string name, description;
                     std::cout << "Введіть ім'я категорії: ";
-                    std::cin.ignore();
-                    std::getline(std::cin, name);
+                    name = ConsoleHelper::readLine();
                     std::cout << "Введіть опис категорії: ";
-                    std::getline(std::cin, description);
-                    if (store.addCategory(name, description))
-                        std::cout << "Категорія успішно створена!";
-                    else
-                        std::cout << "Категорія з такою назвою вже існує!";
+                    description = ConsoleHelper::readLine();
+                   std::cout << store.addCategory(name, description) ? "Категорія успішно створена!" : "Категорія з такою назвою вже існує!";
                     break;
                 }
-                case 2: {
+                case 2: 
+                {
                     std::string name;
                     std::cout << "Введіть ім'я категорії для видалення: ";
-                    std::cin >> name;
-                    if (store.deleteCategory(name))
-                        std::cout << "Категорія успішно видалена!";
-                    else
-                        std::cout << "Категорія з такою назвою не існує!";
+                    name = ConsoleHelper::readLine();
+                    std::cout << store.deleteCategory(name) ? "Категорія успішно видалена!" : "Категорія з такою назвою не існує!";
                     break;
                 }
-                case 3: {
+                case 3: 
+                {
                     store.getCategoiesList();
                     break;
                 }
-                default: {
+                default: 
+                {
                     std::cout << "Не правильний ввід!!";
                     tmp = 0;
                     break;
@@ -147,13 +148,17 @@ int main() {
             }
             break;
         }
-        case 3: {
+        case 3: 
+        {
             int tmp = 1;
-            while (tmp != 0) {
+            while (tmp != 0) 
+            {
                 ShopUI::customersMenu();
                 std::cin >> tmp;
-                switch (tmp) {
-                case 1: {
+                switch (tmp) 
+                {
+                case 1: 
+                {
                     std::string name, contactInformation, pass;
                     std::cout << "Введіть ім'я користувача: ";
                     std::cin.ignore();
@@ -162,25 +167,24 @@ int main() {
                     std::getline(std::cin, pass);
                     std::cout << "Введіть контракту інформацію: ";
                     std::getline(std::cin, contactInformation);
-                    std::cout << (store.addCustomer(name, contactInformation, pass))
-                        ? "Користувача успішно додано! "
-                        : "Помилка! Користувач з таким ім'ям вже існує! ";
+                    std::cout << (store.addCustomer(name, contactInformation, pass)) ? "Користувача успішно додано! " : "Помилка! Користувач з таким ім'ям вже існує!";
                     break;
                 }
-                case 2: {
+                case 2: 
+                {
                     int tmpId;
                     std::cout << "Введіть ID користувача якого бажаєте видалити: ";
                     std::cin >> tmpId;
-                    std::cout << (store.deleteCustomer(tmpId))
-                        ? "Користувач успішно видалений!"
-                        : "Помилка! Користувача з таким ID не існує";
+                    std::cout << (store.deleteCustomer(tmpId)) ? "Користувач успішно видалений!" : "Помилка! Користувача з таким ID не існує";
                     break;
                 }
-                case 3: {
+                case 3: 
+                {
                     store.getClientsList();
                     break;
                 }
-                default: {
+                default: 
+                {
                     std::cout << "Не правильний ввід!!";
                     tmp = 0;
                     break;
@@ -194,24 +198,25 @@ int main() {
             while (tmp != 0) {
                 ShopUI::cartMenu();
                 std::cin >> tmp;
-                switch (tmp) {
-                case 1: {
-                    std::cout << (store.getUser()->customerCart.AddProduct(store.returnMapCategories())
-                        ? "Товар успішно додано в корзину! "
-                        : "Помилка!");
+                switch (tmp) 
+                {
+                case 1: 
+                {
+                    std::cout << (store.getUser()->customerCart.AddProduct(store.returnMapCategories())? "Товар успішно додано в корзину! " : "Помилка!");
                     break;
                 }
-                case 2: {
-                    std::cout << (store.getUser()->customerCart.DeleteProduct())
-                        ? "Item successfully deleted"
-                        : "Shopping cart empty";
+                case 2: 
+                {
+                    std::cout << (store.getUser()->customerCart.DeleteProduct())  ? "Item successfully deleted" : "Shopping cart empty";
                     break;
                 }
-                case 3: {
+                case 3: 
+                {
                     store.getUser()->customerCart.ListCart();
                     break;
                 }
-                case 4: {
+                case 4: 
+                {
                     std::cout << store.getUser()->customerCart.ResulPrice() << " $";
                     break;
                 }
@@ -231,7 +236,7 @@ int main() {
                 std::cin >> tmp;
                 switch (tmp) {
                 case 1: {
-                    auto tempUser = store.getUser();
+                    std::shared_ptr tempUser = store.getUser();
                     auto tempPairOrder = tempUser->AddOrder(tempUser);
                     store.addGlobalOrders(tempPairOrder);
                     break;

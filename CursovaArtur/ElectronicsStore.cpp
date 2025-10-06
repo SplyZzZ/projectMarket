@@ -5,7 +5,7 @@
 bool ElectronicsStore::addCustomer(std::string& name, std::string& contactInformation, std::string& password)
 {
 	if(customersTOid.find(name) != customersTOid.end()) return false;
-	std::shared_ptr<Customer> newUser = std::make_shared<Customer>(name, contactInformation, password);
+	auto newUser = std::make_shared<Customer>(name, contactInformation, password);
 	customersTOid[name] = newUser->getID();
 	customers[newUser->getID()] = newUser;
 	userSession = newUser;
@@ -17,7 +17,7 @@ bool ElectronicsStore::deleteCustomer(int ID) noexcept
 }
 bool ElectronicsStore::addCategory(std::string& name, std::string& description) noexcept
 {
-	std::shared_ptr<Category> tmp = std::make_shared<Category>(name, description);
+	auto tmp = std::make_shared<Category>(name, description);
 	categories[tmp->getName()] = tmp; 
 	return true; 
 }
@@ -120,7 +120,6 @@ void ElectronicsStore::addGlobalOrders(std::pair<int, std::shared_ptr<Order>>& o
 {
 	orders[other.first] = other.second;
 }
-
 void ElectronicsStore::PrintTypeProduct() const noexcept
 {
 	for (const auto& [key, meta] : productRegisty)
@@ -128,4 +127,5 @@ void ElectronicsStore::PrintTypeProduct() const noexcept
 		std::cout << key << " - " << meta.typeProduct << std::endl;
 	}
 }
+
                                                 
