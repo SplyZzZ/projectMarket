@@ -1,6 +1,6 @@
 ﻿#include "Product.h"
 #include "FleshDrive.h"
-
+#include "Security.h"
 Product::Product() : price(0), size(0), name(" "), description(" ") 
 {
 	ID = ++Unical;
@@ -20,14 +20,13 @@ void Product::GetInformationProduct() const noexcept
 void Product::SetInformationProduct() noexcept
 {
 	std::cout << "Enter Price: ";
-std::cin >> price;
-std::cout << "Enter Size: ";
-std::cin >> size;
-std::cout << "Enter Name: ";
-std::cin.ignore();
-std::getline(std::cin, name);
-std::cout << "Description: ";
-std::getline(std::cin, description);
+	ConsoleHelper::readNumber(price);
+	std::cout << "Enter Size: ";
+	ConsoleHelper::readNumber(size);
+	std::cout << "Enter Name: ";
+	ConsoleHelper::readLine();
+	std::cout << "Description: ";
+	ConsoleHelper::readLine();
 }
 int Product::GetID() const noexcept
 {
@@ -37,7 +36,7 @@ double Product::GetPrice() const noexcept
 {
 	return price;
 }
-std::string Product::GetName() noexcept
+std::string Product::GetName() const noexcept
 {
 	return name;
 }

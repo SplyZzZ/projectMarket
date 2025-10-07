@@ -1,5 +1,5 @@
 ﻿#include "exercise.h"
-
+#include "Security.h"
 Exercise::Exercise() : Product()
 {type = " ";}
 Exercise::~Exercise(){}
@@ -12,6 +12,5 @@ void Exercise::SetInformationProduct() noexcept
 {
 	Product::SetInformationProduct();
 	std::cout << "Введіть тип зарядки: ";
-	std::cin.ignore();
-	std::getline(std::cin, type);
+	type = ConsoleHelper::readLine();
 }

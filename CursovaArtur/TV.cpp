@@ -1,5 +1,5 @@
 ﻿#include "TV.h"
-
+#include "Security.h"
 TV::TV() : Product()
 {
 	resolution = " ";
@@ -16,6 +16,5 @@ void TV::SetInformationProduct() noexcept
 {
 	Product::SetInformationProduct();
 	std::cout << "Введіть розмір: ";
-	std::cin.ignore();
-	std::getline(std::cin, resolution);
+	resolution = ConsoleHelper::readLine();
 }

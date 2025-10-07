@@ -13,18 +13,18 @@ Order::Order(std::shared_ptr<Customer>& user)
 	sum = user->customerCart.ResulPrice();
 	ID = ++Unic;
 	status = 1;
-	
+	observer = user;
 	user->customerCart.Clear();
 }
 double Order::GetSum()
 {
 	return sum;
 }
-void Order::SetNewStatusOrder(int selection) noexcept
+void Order::SetNewStatusOrder(size_t selection) noexcept
 {
 	status = selection;
-	/*std::cout << "1 - New\n2 - Payed\n3 - Send\n4 - Delivered\n";
-	std::cin >> status;*/
+	Notify();
+	/*std::cout << "1 - New\n2 - Payed\n3 - Send\n4 - Delivered\n";*/
 }
 int Order::getID() const noexcept
 {
@@ -43,4 +43,12 @@ void Order::GetOrderInformation() const noexcept
 	}
 
 }
+void Order::Notify()
+{
+	if (auto user = observer.lock())
+	{
+		user->UpDate(status, ID);
+	}
+}
+
 int Order::Unic = 0;

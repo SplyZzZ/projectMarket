@@ -2,7 +2,7 @@
 #include "Category.h"
 #include "Customer.h"
 #include "Order.h"
-
+#include "Observer.h"
 class ElectronicsStore
 {
 public:

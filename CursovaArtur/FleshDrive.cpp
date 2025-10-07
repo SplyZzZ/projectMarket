@@ -1,5 +1,5 @@
 ﻿#include "FleshDrive.h"
-
+#include "Security.h"
 FleshDrive::FleshDrive() : Product()
 {
 	sizeGB = 0;
@@ -14,5 +14,5 @@ void FleshDrive::SetInformationProduct() noexcept
 {
 	Product::SetInformationProduct();
 	std::cout << "Введіть розмір флешки в гігабайтах: ";
-	std::cin >> sizeGB;
+	ConsoleHelper::readNumber(sizeGB);
 }

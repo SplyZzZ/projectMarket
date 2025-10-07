@@ -43,14 +43,14 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -106,6 +106,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\Users\dedsv\phc-winner-argon2\vcpkg\installed\x64-windows\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -124,6 +125,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\Users\dedsv\phc-winner-argon2\vcpkg\installed\x64-windows\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -151,6 +153,7 @@
     <ClCompile Include="Product.cpp" />
     <ClCompile Include="Security.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="strategyPayment.cpp" />
     <ClCompile Include="TV.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -161,11 +164,13 @@
     <ClInclude Include="exercise.h" />
     <ClInclude Include="Factory.h" />
     <ClInclude Include="FleshDrive.h" />
+    <ClInclude Include="Observer.h" />
     <ClInclude Include="Order.h" />
     <ClInclude Include="Payment.h" />
     <ClInclude Include="Phone.h" />
     <ClInclude Include="Product.h" />
     <ClInclude Include="Security.h" />
+    <ClInclude Include="strategyPayment.h" />
     <ClInclude Include="TV.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
