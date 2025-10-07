@@ -12,7 +12,7 @@ public:
 	virtual void SetInformationProduct() noexcept;
 	int GetID() const noexcept;
 	double GetPrice() const noexcept;
-	std::string GetName() noexcept;
+	std::string GetName() const noexcept;
 private:
 	int ID;
 	static int Unical;

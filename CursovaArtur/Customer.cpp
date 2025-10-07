@@ -44,11 +44,11 @@ int Customer::DeleteOrder()
 	}
 	std::cout << "\nВведіть ID ордера: ";
 	int selection = 0;
-	std::cin >> selection;
+	ConsoleHelper::readNumber(selection);
 	return selection;
 }
 
-std::shared_ptr<Order> Customer::getOrder(size_t ID) noexcept
+std::shared_ptr<Order> Customer::getOrder(size_t ID) 
 {
 	if(myOrders.find(ID) == myOrders.end()) throw std::out_of_range("Некоректний індекс масиву");
 	return myOrders[ID];
@@ -61,6 +61,11 @@ int Customer::getID() const
 std::string Customer::getName() noexcept
 {
 	return name;
+}
+
+std::string Customer::getHash() const noexcept
+{
+	return hash;
 }
 
 void Customer::UpDate(size_t status, int ID)

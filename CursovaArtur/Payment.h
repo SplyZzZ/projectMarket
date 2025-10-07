@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include "Product.h"
+#include "strategyPayment.h"
 class Order;
 class Payment
 {
@@ -12,6 +13,6 @@ private:
 	static int Unik;
 	int ID;
 	double sum;
-	std::string paymentMethod;
+	std::unique_ptr<IStrategy> paymentMethod;
 	bool transactionStatus;
 };

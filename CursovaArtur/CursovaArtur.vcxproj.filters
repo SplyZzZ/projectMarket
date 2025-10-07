@@ -57,6 +57,9 @@
     <ClCompile Include="Security.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="strategyPayment.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Product.h">
@@ -99,6 +102,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Observer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="strategyPayment.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

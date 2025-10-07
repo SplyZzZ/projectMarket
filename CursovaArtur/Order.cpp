@@ -24,8 +24,7 @@ void Order::SetNewStatusOrder(size_t selection) noexcept
 {
 	status = selection;
 	Notify();
-	/*std::cout << "1 - New\n2 - Payed\n3 - Send\n4 - Delivered\n";
-	std::cin >> status;*/
+	/*std::cout << "1 - New\n2 - Payed\n3 - Send\n4 - Delivered\n";*/
 }
 int Order::getID() const noexcept
 {

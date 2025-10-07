@@ -3,7 +3,7 @@
 #include "Customer.h"
 #include "Order.h"
 #include "Observer.h"
-class ElectronicsStore : public IObserver
+class ElectronicsStore
 {
 public:
 	bool addCustomer(std::string& name, std::string& contactInformation, std::string& password);
