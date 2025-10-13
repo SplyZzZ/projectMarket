@@ -8,6 +8,7 @@ class Customer : public IObserver
 {
 public:
 	Cart customerCart;
+	Customer(std::string&& name, std::string&& contactInformation);
 	Customer(std::string& name, std::string& contactInformation, std::string& password);
 	std::pair<int, std::shared_ptr<Order>> AddOrder(std::shared_ptr<Customer>& user);
 	void getInformationCustomer() const noexcept;

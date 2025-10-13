@@ -5,9 +5,9 @@
 #include "FleshDrive.h"
 std::map<std::string, ProductInformation> productRegisty =
 {
-	{"Phone", {"Телефон", "Гаджети", []() {return std::make_shared<Phone>();}}},
-	{"TV", {"Телевізор", "ДомашняТехніка", []() {return std::make_shared<TV>();}}},
-	{"Exercise", {"Зарядка", "Живлення", []() {return std::make_shared<Exercise>();}}},
-	{"FleshDrive", {"Флешка", "Пам'ять" ,[]() {return std::make_shared<FleshDrive>();}}}
+	{"Phone", {"Телефон", "Gadgets", []() {return std::make_shared<Phone>();}}},
+	{"TV", {"Телевізор", "Home Appliances", []() {return std::make_shared<TV>();}}},
+	{"Exercise", {"Зарядка", "Power supply", []() {return std::make_shared<Exercise>();}}},
+	{"FleshDrive", {"Флешка", "Memory" ,[]() {return std::make_shared<FleshDrive>();}}}
 };
 

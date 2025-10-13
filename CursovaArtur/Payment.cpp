@@ -1,130 +1,120 @@
 ﻿#include "Payment.h"
 #include "Order.h"
+#include "UIConsoleColor.h"
 #include <thread>
-#define RESET   "\033[0m"
-#define CYAN    "\033[36m"
-#define GREEN   "\033[32m"
-#define YELLOW  "\033[33m"
-#define RED     "\033[31m"
+#include <iomanip>
+#include <iostream>
+
 Payment::Payment() : transactionStatus(false), sum(0), paymentMethod(nullptr)
 {
-	ID = ++Unik;
-
+    ID = ++Unik;
 }
+
 bool Payment::InitializePayment(std::shared_ptr<Order>& order) noexcept
 {
-    std::cout << CYAN
-        << "\n==============================================\n"
-        << "           СИСТЕМА ОБРОБКИ ПЛАТЕЖІВ\n"
-        << "==============================================\n" << RESET;
+    UIConsoleColor::printTextUseColor("\n=============================================================\n", UIConsoleColor::Color::Cyan);
+    UIConsoleColor::printTextUseColor("             СИСТЕМА ОБРОБКИ ПЛАТЕЖІВ\n", UIConsoleColor::Color::Cyan);
+    UIConsoleColor::printTextUseColor("=============================================================\n", UIConsoleColor::Color::Cyan);
 
-    std::cout << "Номер операції: " << ID << "\n";
-    std::cout << "Сума до сплати: ₴" << std::fixed << std::setprecision(2) << sum << "\n\n";
+    UIConsoleColor::printTextUseColor("Номер операції: ", UIConsoleColor::Color::Cyan);
+    std::cout << ID << "\n";
 
-    std::cout << "Оберіть спосіб оплати:\n";
-    std::cout << "  [1] 💳 Картка\n";
-    std::cout << "  [2] 💵 Готівка\n";
-    std::cout << "  [3] 🪙 Криптовалюта\n";
-    std::cout << "  [4] 🎫 Сертифікат\n\n";
+    UIConsoleColor::printTextUseColor("Сума до сплати: ", UIConsoleColor::Color::Cyan);
+    std::cout << "₴" << std::fixed << std::setprecision(2) << order->GetSum() << "\n\n";
 
-    std::cout << YELLOW << "Введіть номер варіанту: " << RESET;
+    UIConsoleColor::printTextUseColor("Оберіть спосіб оплати:\n", UIConsoleColor::Color::Yellow);
+    std::cout << "  [1] 💳 Картка\n"
+        << "  [2] 💵 Готівка\n"
+        << "  [3] 🪙 Криптовалюта\n"
+        << "  [4] 🎫 Сертифікат\n\n";
+
+    UIConsoleColor::printTextUseColor("Введіть номер варіанту: ", UIConsoleColor::Color::Yellow);
     size_t selection = 0;
     std::cin >> selection;
+
     switch (selection)
     {
     case 1:
-    {
         paymentMethod = std::make_unique<Card>();
         break;
-    }
     case 2:
-    {
         paymentMethod = std::make_unique<Cash>();
         break;
-    }
-    case 3: 
-    {
+    case 3:
         paymentMethod = std::make_unique<Crypt>();
         break;
-    }
     case 4:
-    {
-        paymentMethod = std::make_unique<Crypt>();
+        paymentMethod = std::make_unique<Certificate>();
         break;
-    }
-    default: 
-    {
-        std::cout << RED << "\n❌ Невірний вибір! Операцію скасовано.\n" << RESET;
+    default:
+        UIConsoleColor::printTextUseColor("\n❌ Невірний вибір! Операцію скасовано.\n", UIConsoleColor::Color::Red);
         return false;
     }
-    }
-    return approvePay(order);
 
+    sum = order->GetSum();
+    return approvePay(order);
 }
 
 bool Payment::approvePay(std::shared_ptr<Order>& order)
 {
-    std::cout << CYAN
-        << "\n----------------------------------------------\n"
-        << "       ПІДТВЕРДЖЕННЯ ОПЛАТИ ЗАМОВЛЕННЯ\n"
-        << "----------------------------------------------\n" << RESET;
+    UIConsoleColor::printTextUseColor("\n-------------------------------------------------------------\n", UIConsoleColor::Color::Cyan);
+    UIConsoleColor::printTextUseColor("         ПІДТВЕРДЖЕННЯ ОПЛАТИ ЗАМОВЛЕННЯ\n", UIConsoleColor::Color::Cyan);
+    UIConsoleColor::printTextUseColor("-------------------------------------------------------------\n", UIConsoleColor::Color::Cyan);
 
-    std::cout << "У вас є " << YELLOW << "5 хвилин" << RESET
-        << " для підтвердження замовлення.\n\n"
-        << "  [1] ✅ Підтвердити\n"
-        << "  [2] ❌ Скасувати\n\n"
-        << YELLOW << "Ваш вибір: " << RESET;
+    std::cout << "У вас є ";
+    UIConsoleColor::printTextUseColor("5 хвилин", UIConsoleColor::Color::Yellow);
+    std::cout << " для підтвердження замовлення.\n\n";
 
+    std::cout << "  [1] ✅ Підтвердити\n"
+        << "  [2] ❌ Скасувати\n\n";
+
+    UIConsoleColor::printTextUseColor("Ваш вибір: ", UIConsoleColor::Color::Yellow);
     std::size_t selection{};
     std::cin >> selection;
 
     if (selection == 2)
     {
-        std::cout << RED << "\n❌ Замовлення скасовано користувачем.\n" << RESET;
+        UIConsoleColor::printTextUseColor("\n❌ Замовлення скасовано користувачем.\n", UIConsoleColor::Color::Red);
         transactionStatus = false;
         return false;
     }
 
     if (selection != 1)
     {
-        std::cout << RED << "\n⚠️  Невірний вибір! Операцію скасовано.\n" << RESET;
+        UIConsoleColor::printTextUseColor("\n⚠️  Невірний вибір! Операцію скасовано.\n", UIConsoleColor::Color::Red);
         transactionStatus = false;
         return false;
     }
 
     transactionStatus = true;
 
- 
-    std::cout << CYAN << "\nПідтвердження транзакції";
+    UIConsoleColor::printTextUseColor("\nПідтвердження транзакції", UIConsoleColor::Color::Cyan);
     for (int i = 0; i < 3; ++i)
     {
         std::cout << ".";
         std::cout.flush();
         std::this_thread::sleep_for(std::chrono::milliseconds(600));
     }
-    std::cout << RESET << "\n";
+    std::cout << "\n";
 
-   
     if (paymentMethod)
     {
-        std::cout << GREEN << "\n✅ Оплату підтверджено!\n" << RESET;
+        UIConsoleColor::printTextUseColor("\n✅ Оплату підтверджено!\n", UIConsoleColor::Color::Green);
         paymentMethod->payment();
     }
     else
     {
-        std::cerr << RED << "\n❌ Помилка: метод оплати не ініціалізовано!\n" << RESET;
+        UIConsoleColor::printTextUseColor("\n❌ Помилка: метод оплати не ініціалізовано!\n", UIConsoleColor::Color::Red);
         throw std::runtime_error("Помилка в операції!");
     }
 
-    order->SetNewStatusOrder(++selection);
+    order->SetNewStatusOrder(2); 
 
-    std::cout << CYAN
-        << "\n----------------------------------------------\n"
-        << "       ТРАНЗАКЦІЯ ЗАВЕРШЕНА УСПІШНО\n"
-        << "----------------------------------------------\n" << RESET;
+    UIConsoleColor::printTextUseColor("\n-------------------------------------------------------------\n", UIConsoleColor::Color::Cyan);
+    UIConsoleColor::printTextUseColor("          ТРАНЗАКЦІЯ ЗАВЕРШЕНА УСПІШНО\n", UIConsoleColor::Color::Cyan);
+    UIConsoleColor::printTextUseColor("-------------------------------------------------------------\n", UIConsoleColor::Color::Cyan);
 
     return true;
 }
-
 
 int Payment::Unik = 0;
