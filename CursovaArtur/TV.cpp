@@ -1,20 +1,30 @@
 ﻿#include "TV.h"
 #include "Security.h"
+#include "UIConsoleColor.h"
+#include <iostream>
+#include <iomanip>
+
 TV::TV() : Product()
 {
-	resolution = " ";
+    resolution = " ";
 }
-TV::~TV()
-{
-}
+
+TV::~TV() {}
+
 void TV::GetInformationProduct() const noexcept
 {
-	Product::GetInformationProduct();
-	std::cout << "Розмір: " << resolution << std::endl;
+    Product::GetInformationProduct();
+
+    UIConsoleColor::printTextUseColor("Розмір екрану: ", UIConsoleColor::Color::Cyan);
+    std::cout << resolution << "\n";
 }
+
 void TV::SetInformationProduct() noexcept
 {
-	Product::SetInformationProduct();
-	std::cout << "Введіть розмір: ";
-	resolution = ConsoleHelper::readLine();
+    Product::SetInformationProduct();
+
+    UIConsoleColor::printTextUseColor("Введіть розмір екрану: ", UIConsoleColor::Color::Yellow);
+    resolution = ConsoleHelper::readLine();
+
+    UIConsoleColor::printTextUseColor("✅ Телевізор успішно додано!\n", UIConsoleColor::Color::Green);
 }

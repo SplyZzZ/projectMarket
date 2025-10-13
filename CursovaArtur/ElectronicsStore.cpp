@@ -1,26 +1,21 @@
 ﻿#include "ElectronicsStore.h"
 #include "Factory.h"
 #include "Security.h"
+#include "UIConsoleColor.h"
 #include <iostream>
 #include <iomanip>
 #include <stdexcept>
 
-// Кольори ANSI
-#define RESET   "\033[0m"
-#define CYAN    "\033[36m"
-#define GREEN   "\033[32m"
-#define RED     "\033[31m"
-#define YELLOW  "\033[33m"
-#define MAGENTA "\033[35m"
+using namespace UIConsoleColor;
 
 bool ElectronicsStore::addCustomer(std::string& name, std::string& contactInformation, std::string& password)
 {
-    std::cout << CYAN << "\n---------------------------------------------\n"
-        << "         ДОДАВАННЯ НОВОГО КЛІЄНТА\n"
-        << "---------------------------------------------\n" << RESET;
+    printTextUseColor("\n---------------------------------------------\n"
+        "         ДОДАВАННЯ НОВОГО КЛІЄНТА\n"
+        "---------------------------------------------\n", Color::Cyan);
 
     if (customersTOid.find(name) != customersTOid.end()) {
-        std::cout << RED << "❌ Користувач з іменем \"" << name << "\" вже існує!\n" << RESET;
+        printTextUseColor("❌ Користувач з іменем \"" + name + "\" вже існує!\n", Color::Red);
         return false;
     }
 
@@ -29,18 +24,18 @@ bool ElectronicsStore::addCustomer(std::string& name, std::string& contactInform
     customers[newUser->getID()] = newUser;
     userSession = newUser;
 
-    std::cout << GREEN << "✅ Користувача \"" << name << "\" успішно додано до бази.\n" << RESET;
+    printTextUseColor("✅ Користувача \"" + name + "\" успішно додано до бази.\n", Color::Green);
     return true;
 }
 
 bool ElectronicsStore::deleteCustomer(int ID) noexcept
 {
-    std::cout << CYAN << "\n---------------------------------------------\n"
-        << "          ВИДАЛЕННЯ КОРИСТУВАЧА\n"
-        << "---------------------------------------------\n" << RESET;
+    printTextUseColor("\n---------------------------------------------\n"
+        "          ВИДАЛЕННЯ КОРИСТУВАЧА\n"
+        "---------------------------------------------\n", Color::Cyan);
 
     if (!customers.count(ID)) {
-        std::cout << RED << "❌ Користувача з ID " << ID << " не знайдено.\n" << RESET;
+        printTextUseColor("❌ Користувача з ID " + std::to_string(ID) + " не знайдено.\n", Color::Red);
         return false;
     }
 
@@ -48,37 +43,37 @@ bool ElectronicsStore::deleteCustomer(int ID) noexcept
     customersTOid.erase(name);
     customers.erase(ID);
 
-    std::cout << GREEN << "✅ Користувача \"" << name << "\" успішно видалено.\n" << RESET;
+    printTextUseColor("✅ Користувача \"" + name + "\" успішно видалено.\n", Color::Green);
     return true;
 }
 
 bool ElectronicsStore::addCategory(std::string& name, std::string& description) noexcept
 {
-    std::cout << CYAN << "\n---------------------------------------------\n"
-        << "          ДОДАВАННЯ КАТЕГОРІЇ\n"
-        << "---------------------------------------------\n" << RESET;
+    printTextUseColor("\n---------------------------------------------\n"
+        "          ДОДАВАННЯ КАТЕГОРІЇ\n"
+        "---------------------------------------------\n", Color::Cyan);
 
     auto tmp = std::make_shared<Category>(name, description);
     categories[tmp->getName()] = tmp;
 
-    std::cout << GREEN << "✅ Категорію \"" << name << "\" додано до системи.\n" << RESET;
+    printTextUseColor("✅ Категорію \"" + name + "\" додано до системи.\n", Color::Green);
     return true;
 }
 
 bool ElectronicsStore::deleteCategory(std::string& name) noexcept
 {
-    std::cout << CYAN << "\n---------------------------------------------\n"
-        << "           ВИДАЛЕННЯ КАТЕГОРІЇ\n"
-        << "---------------------------------------------\n" << RESET;
+    printTextUseColor("\n---------------------------------------------\n"
+        "           ВИДАЛЕННЯ КАТЕГОРІЇ\n"
+        "---------------------------------------------\n", Color::Cyan);
 
-    if (!(StoreUtils::searchCategory(categories, name))) 
+    if (!(StoreUtils::searchCategory(categories, name)))
     {
-        std::cout << RED << "❌ Категорію \"" << name << "\" не знайдено.\n" << RESET;
+        printTextUseColor("❌ Категорію \"" + name + "\" не знайдено.\n", Color::Red);
         return false;
     }
 
     categories.erase(name);
-    std::cout << GREEN << "✅ Категорію \"" << name << "\" видалено.\n" << RESET;
+    printTextUseColor("✅ Категорію \"" + name + "\" видалено.\n", Color::Green);
     return true;
 }
 
@@ -92,19 +87,19 @@ size_t ElectronicsStore::getClientsSize() const noexcept
     return customers.size();
 }
 
-void ElectronicsStore::addProducts() noexcept
+void ElectronicsStore::addProducts()
 {
-    std::cout << CYAN << "\n---------------------------------------------\n"
-        << "          ДОДАВАННЯ ТОВАРУ\n"
-        << "---------------------------------------------\n" << RESET;
+    printTextUseColor("\n---------------------------------------------\n"
+        "          ДОДАВАННЯ ТОВАРУ\n"
+        "---------------------------------------------\n", Color::Cyan);
 
     PrintTypeProduct();
-    std::cout << YELLOW << "\nВиберіть тип товару для додавання: " << RESET;
+    printTextUseColor("\nВиберіть тип товару для додавання: ", Color::Yellow);
     std::string selection = ConsoleHelper::readLine();
 
     auto iterator = productRegisty.find(selection);
     if (iterator == productRegisty.end()) {
-        std::cout << RED << "❌ Не існує такого типу продукту.\n" << RESET;
+        printTextUseColor("❌ Не існує такого типу продукту.\n", Color::Red);
         throw std::out_of_range("Не існує такого типу");
     }
 
@@ -114,79 +109,77 @@ void ElectronicsStore::addProducts() noexcept
 
     if (!(StoreUtils::searchCategory(categories, meta.category)))
     {
-        std::cout << YELLOW << "Введіть опис нової категорії \"" << meta.category << "\": " << RESET;
+        printTextUseColor("Введіть опис нової категорії \"" + meta.category + "\": ", Color::Yellow);
         std::string description = ConsoleHelper::readLine();
         addCategory(meta.category, description);
     }
 
     categories[meta.category]->AddProduct(newProduct);
-    std::cout << GREEN << "✅ Товар успішно додано в категорію \"" << meta.category << "\".\n" << RESET;
+    printTextUseColor("✅ Товар успішно додано в категорію \"" + meta.category + "\".\n", Color::Green);
 }
 
 void ElectronicsStore::getCategoiesList() const noexcept
 {
-    std::cout << CYAN << "\n---------------------------------------------\n"
-        << "               СПИСОК КАТЕГОРІЙ\n"
-        << "---------------------------------------------\n" << RESET;
+    printTextUseColor("\n---------------------------------------------\n"
+        "               СПИСОК КАТЕГОРІЙ\n"
+        "---------------------------------------------\n", Color::Cyan);
 
     if (categories.empty()) {
-        std::cout << RED << "⚠️  Категорій немає.\n" << RESET;
+        printTextUseColor("⚠️  Категорій немає.\n", Color::Red);
         return;
     }
 
     for (const auto& [name, category] : categories)
-    {
-        std::cout << GREEN << "📦 " << name << RESET << std::endl;
-    }
+        printTextUseColor("📦 " + name + "\n", Color::Green);
 }
 
 void ElectronicsStore::deleteProduct(std::string& name) noexcept
 {
-    std::cout << CYAN << "\n---------------------------------------------\n"
-        << "           ВИДАЛЕННЯ ТОВАРУ\n"
-        << "---------------------------------------------\n" << RESET;
+    printTextUseColor("\n---------------------------------------------\n"
+        "           ВИДАЛЕННЯ ТОВАРУ\n"
+        "---------------------------------------------\n", Color::Cyan);
 
     if (categories.find(name) == categories.end()) {
-        std::cout << RED << "❌ Категорію \"" << name << "\" не знайдено.\n" << RESET;
+        printTextUseColor("❌ Категорію \"" + name + "\" не знайдено.\n", Color::Red);
         return;
     }
 
     categories[name]->GetListProduct();
-    std::cout << YELLOW << "Введіть ID товару для видалення: " << RESET;
+    printTextUseColor("Введіть ID товару для видалення: ", Color::Yellow);
     int tmp = 0;
     ConsoleHelper::readNumber(tmp);
     categories[name]->DeleteProduct(tmp);
-    std::cout << GREEN << "✅ Товар з ID " << tmp << " видалено.\n" << RESET;
+    printTextUseColor("✅ Товар з ID " + std::to_string(tmp) + " видалено.\n", Color::Green);
 }
 
 void ElectronicsStore::getProductList(std::string& name) noexcept
 {
     if (categories.find(name) == categories.end()) {
-        std::cout << RED << "❌ Такої категорії не існує.\n" << RESET;
+        printTextUseColor("❌ Такої категорії не існує.\n", Color::Red);
         return;
     }
 
-    std::cout << CYAN << "\n---------------------------------------------\n"
-        << "           ТОВАРИ КАТЕГОРІЇ: " << name << "\n"
-        << "---------------------------------------------\n" << RESET;
+    printTextUseColor("\n---------------------------------------------\n"
+        "           ТОВАРИ КАТЕГОРІЇ: " + name + "\n"
+        "---------------------------------------------\n", Color::Cyan);
 
     categories[name]->GetListProduct();
 }
 
 void ElectronicsStore::getClientsList() const noexcept
 {
-    std::cout << CYAN << "\n---------------------------------------------\n"
-        << "             СПИСОК КОРИСТУВАЧІВ\n"
-        << "---------------------------------------------\n" << RESET;
+    printTextUseColor("\n---------------------------------------------\n"
+        "             СПИСОК КОРИСТУВАЧІВ\n"
+        "---------------------------------------------\n", Color::Cyan);
 
     if (customers.empty()) {
-        std::cout << RED << "⚠️  Користувачів немає.\n" << RESET;
+        printTextUseColor("⚠️  Користувачів немає.\n", Color::Red);
         return;
     }
 
     for (const auto& [id, cust] : customers)
     {
-        std::cout << MAGENTA << "👤 ID: " << id << RESET << std::endl;
+        printTextUseColor("👤 ID: " + std::to_string(id) + "\n", Color::Magenta);
         cust->getInformationCustomer();
         std::cout << "---------------------------------------------\n";
     }
@@ -199,23 +192,23 @@ std::shared_ptr<Customer> ElectronicsStore::getCustomer(int ID) noexcept
 
 bool ElectronicsStore::loginToStore(std::string& name, std::string& password)
 {
-    std::cout << CYAN << "\n---------------------------------------------\n"
-        << "             ВХІД ДО МАГАЗИНУ\n"
-        << "---------------------------------------------\n" << RESET;
+    printTextUseColor("\n---------------------------------------------\n"
+        "             ВХІД ДО МАГАЗИНУ\n"
+        "---------------------------------------------\n", Color::Cyan);
 
     if (customersTOid.find(name) == customersTOid.end()) {
-        std::cout << RED << "❌ Користувача \"" << name << "\" не знайдено.\n" << RESET;
+        printTextUseColor("❌ Користувача \"" + name + "\" не знайдено.\n", Color::Red);
         return false;
     }
 
     auto customer = customers[customersTOid[name]];
     if (customer && Security::verifyPassword(customer->getHash(), password)) {
         userSession = customer;
-        std::cout << GREEN << "✅ Вхід виконано успішно! Вітаємо, " << name << "!\n" << RESET;
+        printTextUseColor("✅ Вхід виконано успішно! Вітаємо, " + name + "!\n", Color::Green);
         return true;
     }
 
-    std::cout << RED << "❌ Невірний пароль для користувача \"" << name << "\".\n" << RESET;
+    printTextUseColor("❌ Невірний пароль для користувача \"" + name + "\".\n", Color::Red);
     return false;
 }
 
@@ -224,7 +217,7 @@ std::shared_ptr<Customer> ElectronicsStore::getUser() noexcept
     return userSession;
 }
 
-const std::unordered_map<std::string, std::shared_ptr<Category>>& ElectronicsStore::returnMapCategories()
+std::unordered_map<std::string, std::shared_ptr<Category>>& ElectronicsStore::returnMapCategories()
 {
     return categories;
 }
@@ -236,10 +229,7 @@ void ElectronicsStore::addGlobalOrders(std::pair<int, std::shared_ptr<Order>>& o
 
 void ElectronicsStore::PrintTypeProduct() const noexcept
 {
-    std::cout << CYAN << "Доступні типи товарів:\n" << RESET;
+    printTextUseColor("Доступні типи товарів:\n", Color::Cyan);
     for (const auto& [key, meta] : productRegisty)
-    {
-        std::cout << "  " << YELLOW << key << RESET
-            << " — " << meta.typeProduct << "\n";
-    }
+        printTextUseColor("  " + key + " — " + meta.typeProduct + "\n", Color::Yellow);
 }

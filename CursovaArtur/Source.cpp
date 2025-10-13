@@ -6,14 +6,7 @@
 #include "Security.h"
 #include <clocale>
 #include <windows.h>
-// ANSI кольори
-#define RESET   "\033[0m"
-#define CYAN    "\033[36m"
-#define GREEN   "\033[32m"
-#define RED     "\033[31m"
-#define YELLOW  "\033[33m"
-#define MAGENTA "\033[35m"
-#define BLUE    "\033[34m"
+#include "UIConsoleColor.h"
 
 namespace ShopUI
 {
@@ -30,7 +23,8 @@ namespace ShopUI
     void printHeader(const std::string& title);
 }
 
-int main() {
+int main() 
+{
     ElectronicsStore store;
     SetConsoleOutputCP(65001);
     SetConsoleCP(65001);
@@ -39,12 +33,13 @@ int main() {
  
     int choice = 0;
 
-    std::cout << CYAN;
+  
     ShopUI::printHeader("ЛАСКАВО ПРОСИМО ДО ІНТЕРНЕТ-МАГАЗИНУ ЕЛЕКТРОНІКИ");
-    std::cout << RESET;
+
     std::this_thread::sleep_for(std::chrono::milliseconds(600));
 
-    do {
+    do 
+    {
         ShopUI::showMainMenu();
         std::cin >> choice;
 
@@ -66,15 +61,21 @@ int main() {
                 case 1:
                 {
                     store.addProducts();
+                    UIConsoleColor::printTextUseColor("✅ Товар успішно створено!\n", UIConsoleColor::Color::Green);
                     break;
                 }
                 case 2:
                 {
                     if (store.getCategorySize() == 0)
-                        std::cout << RED << "⚠️  Спершу створіть категорію!\n" << RESET;
-                    else {
+                    {
+                        
+                        UIConsoleColor::printTextUseColor("⚠️  Спершу створіть категорію!\n", UIConsoleColor::Color::Red);
+                     
+                    }
+                    else 
+                    {
                         std::string selection;
-                        std::cout << YELLOW << "Введіть назву категорії для видалення товару: " << RESET;
+                        UIConsoleColor::printTextUseColor("Введіть назву категорії для видалення товару: ", UIConsoleColor::Color::Yellow);
                         store.getCategoiesList();
                         selection = ConsoleHelper::readLine();
                         store.deleteProduct(selection);
@@ -84,10 +85,13 @@ int main() {
                 case 3:
                 {
                     if (store.getCategorySize() == 0)
-                        std::cout << RED << "⚠️  Спершу створіть категорію!\n" << RESET;
-                    else {
-                        std::string selection;
-                        std::cout << YELLOW << "Введіть назву категорії для перегляду: " << RESET;
+                    {
+                        UIConsoleColor::printTextUseColor("⚠️  Спершу створіть категорію!\n", UIConsoleColor::Color::Red);
+                    }
+                    else 
+                    {
+                        std::string selection;                    
+                        UIConsoleColor::printTextUseColor("Введіть назву категорії для перегляду: ", UIConsoleColor::Color::Yellow);
                         store.getCategoiesList();
                         selection = ConsoleHelper::readLine();
                         store.getProductList(selection);
@@ -96,7 +100,7 @@ int main() {
                 }
                 default:
                 {
-                    std::cout << RED << "❌ Неправильний ввід.\n" << RESET;
+                    UIConsoleColor::printTextUseColor("❌ Неправильний ввід.\n", UIConsoleColor::Color::Red);
                     tmp = 0;
                     break;
                 }
@@ -119,23 +123,34 @@ int main() {
                 case 1:
                 {
                     std::string name, description;
-                    std::cout << YELLOW << "Введіть назву категорії: " << RESET;
+                    UIConsoleColor::printTextUseColor("Введіть назву категорії: ", UIConsoleColor::Color::Yellow);
                     name = ConsoleHelper::readLine();
-                    std::cout << YELLOW << "Введіть опис категорії: " << RESET;
+                    UIConsoleColor::printTextUseColor("Введіть опис категорії : ", UIConsoleColor::Color::Yellow);
                     description = ConsoleHelper::readLine();
-                    std::cout << (store.addCategory(name, description)
-                        ? GREEN "✅ Категорію успішно створено!\n" RESET
-                        : RED "❌ Категорія з такою назвою вже існує!\n" RESET);
+                    if (store.addCategory(name, description))
+                    {
+                        UIConsoleColor::printTextUseColor("✅ Категорію успішно створено!\n", UIConsoleColor::Color::Green);
+                    }
+                    else
+                    {
+                        UIConsoleColor::printTextUseColor("❌ Категорія з такою назвою вже існує!\n", UIConsoleColor::Color::Red);
+                    }
+                        
                     break;
                 }
                 case 2:
                 {
                     std::string name;
-                    std::cout << YELLOW << "Введіть назву категорії для видалення: " << RESET;
+                    UIConsoleColor::printTextUseColor("Введіть назву категорії для видалення: ", UIConsoleColor::Color::Yellow);
                     name = ConsoleHelper::readLine();
-                    std::cout << (store.deleteCategory(name)
-                        ? GREEN "✅ Категорію успішно видалено!\n" RESET
-                        : RED "❌ Категорії не знайдено!\n" RESET);
+                    if (store.deleteCategory(name))
+                    {
+                        UIConsoleColor::printTextUseColor("✅ Категорію успішно видалено!\n", UIConsoleColor::Color::Green);
+                    }
+                    else
+                    {
+                        UIConsoleColor::printTextUseColor("❌ Категорії не знайдено!\n", UIConsoleColor::Color::Red);
+                    }
                     break;
                 }
                 case 3:
@@ -145,10 +160,9 @@ int main() {
                 }
                 default:
                 {
-                    std::cout << RED << "❌ Неправильний ввід.\n" << RESET;
+                    UIConsoleColor::printTextUseColor("❌ Неправильний ввід.\n", UIConsoleColor::Color::Red);
                     tmp = 0;
                     break;
-
                 }
                 }
             }
@@ -171,26 +185,36 @@ int main() {
                 case 1:
                 {
                     std::string name, contactInformation, pass;
-                    std::cout << YELLOW << "Введіть ім’я користувача: " << RESET;
+                    UIConsoleColor::printTextUseColor("Введіть ім’я користувача: ", UIConsoleColor::Color::Yellow);
                     name =  ConsoleHelper::readLine();
-                    std::cout << YELLOW << "Введіть пароль: " << RESET;
+                    UIConsoleColor::printTextUseColor("Введіть пароль: ", UIConsoleColor::Color::Yellow);
                     pass = ConsoleHelper::readLine();
-                    std::cout << YELLOW << "Введіть контактну інформацію: " << RESET;
+                    UIConsoleColor::printTextUseColor("Введіть контактну інформацію: ", UIConsoleColor::Color::Yellow);
                     contactInformation = ConsoleHelper::readLine();
 
-                    std::cout << (store.addCustomer(name, contactInformation, pass)
-                        ? GREEN "✅ Користувача додано!\n" RESET
-                        : RED "❌ Ім’я вже використовується!\n" RESET);
+                    if (store.addCustomer(name, contactInformation, pass))
+                    {
+                        UIConsoleColor::printTextUseColor("✅ Користувача додано!\n", UIConsoleColor::Color::Green);
+                    }
+                    else
+                    {
+                        UIConsoleColor::printTextUseColor("❌ Ім’я вже використовується!\n", UIConsoleColor::Color::Red);
+                    }
                     break;
                 }
                 case 2:
                 {
                     int tmpId;
-                    std::cout << YELLOW << "Введіть ID користувача для видалення: " << RESET;
+                    UIConsoleColor::printTextUseColor("Введіть ID користувача для видалення: ", UIConsoleColor::Color::Yellow);
                     std::cin >> tmpId;
-                    std::cout << (store.deleteCustomer(tmpId)
-                        ? GREEN "✅ Користувача успішно видалено!\n" RESET
-                        : RED "❌ Такого користувача не існує!\n" RESET);
+                    if (store.deleteCustomer(tmpId))
+                    {
+                        UIConsoleColor::printTextUseColor("✅ Користувача успішно видалено!\n", UIConsoleColor::Color::Green);
+                    }
+                    else
+                    {
+                        UIConsoleColor::printTextUseColor("❌ Такого користувача не існує!\n", UIConsoleColor::Color::Red);
+                    }
                     break;
                 }
                 case 3:
@@ -200,7 +224,7 @@ int main() {
                 }
                 default:
                 {
-                    std::cout << RED << "❌ Неправильний ввід.\n" << RESET;
+                    UIConsoleColor::printTextUseColor("❌ Неправильний ввід.\n", UIConsoleColor::Color::Red);
                     tmp = 0;
                     break;
                 }
@@ -224,16 +248,27 @@ int main() {
                 }
                 case 1:
                 {
-                    std::cout << (store.getUser()->customerCart.AddProduct(store.returnMapCategories())
-                        ? GREEN "✅ Товар додано в кошик!\n" RESET
-                        : RED "❌ Помилка при додаванні.\n" RESET);
+                    std::cout << store.getUser()->getName();
+                    if (store.getUser()->customerCart.AddProduct(store.returnMapCategories()))
+                    {
+                        UIConsoleColor::printTextUseColor("✅ Товар додано в кошик!\n", UIConsoleColor::Color::Green);
+                    }
+                    else
+                    {
+                        UIConsoleColor::printTextUseColor("❌ Помилка при додаванні.\n", UIConsoleColor::Color::Red);
+                    }
                     break;
                 }
                 case 2:
                 {
-                    std::cout << (store.getUser()->customerCart.DeleteProduct()
-                        ? GREEN "✅ Товар видалено з кошика!\n" RESET
-                        : RED "⚠️  Кошик порожній.\n" RESET);
+                    if (store.getUser()->customerCart.DeleteProduct())
+                    {
+                        UIConsoleColor::printTextUseColor("✅ Товар видалено з кошика!\n", UIConsoleColor::Color::Green);
+                    }
+                    else
+                    {
+                        UIConsoleColor::printTextUseColor("⚠️  Кошик порожній.\n", UIConsoleColor::Color::Red);
+                    }
                     break;
                 }
                 case 3:
@@ -243,12 +278,20 @@ int main() {
                 }
                 case 4:
                 {
-                    std::cout << CYAN << "Загальна вартість: " << store.getUser()->customerCart.ResulPrice() << " ₴\n" << RESET;
+                    
+                    UIConsoleColor::printTextUseColor("Загальна вартість: ", UIConsoleColor::Color::Cyan);
+
+                    auto tmpSum = store.getUser()->customerCart.ResulPrice();
+                    std::string Sum = std::to_string(tmpSum);
+
+                    UIConsoleColor::printTextUseColor(Sum, UIConsoleColor::Color::Cyan);
+                    UIConsoleColor::printTextUseColor(" ₴\n", UIConsoleColor::Color::Cyan);
+               
                     break;
                 }
                 default:
                 {
-                    std::cout << RED << "❌ Неправильний ввід.\n" << RESET;
+                    UIConsoleColor::printTextUseColor("❌ Неправильний ввід.\n", UIConsoleColor::Color::Red);
                     tmp = 0;
                     break;
                 }
@@ -256,7 +299,7 @@ int main() {
             }
             break;
         }
-
+        
         case 5:
         {
             int tmp = 1;
@@ -281,17 +324,22 @@ int main() {
                 {
                     size_t selection = 0;
                     store.getUser()->getUserOrderList();
-                    std::cout << YELLOW << "Введіть ID замовлення: " << RESET;
-                    std::cin >> selection;
+                    UIConsoleColor::printTextUseColor("Введіть ID замовлення: ",UIConsoleColor::Color::Yellow);
+                    ConsoleHelper::readNumber(selection);
                     auto orderUser = store.getUser()->getOrder(selection);
-                    std::cout << (store.getUser()->getOrder(selection)->paymentOrder.InitializePayment(orderUser)
-                        ? GREEN "✅ Оплату виконано успішно!\n" RESET
-                        : RED "❌ Помилка оплати!\n" RESET);
+                    if (store.getUser()->getOrder(selection)->paymentOrder.InitializePayment(orderUser))
+                    {
+                        UIConsoleColor::printTextUseColor("✅ Оплату виконано успішно!\n", UIConsoleColor::Color::Green);
+                    }
+                    else
+                    {
+                        UIConsoleColor::printTextUseColor("❌ Помилка оплати!\n", UIConsoleColor::Color::Red);
+                    }
                     break;
                 }
                 default:
                 {
-                    std::cout << RED << "❌ Неправильний ввід.\n" << RESET;
+                    UIConsoleColor::printTextUseColor("❌ Неправильний ввід.\n", UIConsoleColor::Color::Red);
                     tmp = 0;
                     break;
                 }
@@ -301,11 +349,11 @@ int main() {
         }
 
         case 0:
-            std::cout << GREEN << "\nДякуємо за використання програми! Вихід...\n" << RESET;
+            UIConsoleColor::printTextUseColor("\nДякуємо за використання програми! Вихід...\n", UIConsoleColor::Color::Green);
             break;
 
         default:
-            std::cout << RED << "❌ Невірний вибір. Спробуйте ще раз.\n" << RESET;
+            UIConsoleColor::printTextUseColor("❌ Невірний вибір. Спробуйте ще раз.\n", UIConsoleColor::Color::Red);
             break;
         }
 
@@ -314,14 +362,12 @@ int main() {
     return 0;
 }
 
-// ---------------------------------------------
-//              Графічний інтерфейс
-// ---------------------------------------------
+
 void ShopUI::printHeader(const std::string& title)
 {
-    std::cout << CYAN << "=============================================================\n";
+    UIConsoleColor::printTextUseColor("=============================================================\n", UIConsoleColor::Color::Cyan);
     std::cout << "     " << title << "\n";
-    std::cout << "=============================================================\n" << RESET;
+    std::cout << "=============================================================\n";
 }
 
 void ShopUI::showMainMenu() {
@@ -332,8 +378,8 @@ void ShopUI::showMainMenu() {
         << "4. Кошик покупок\n"
         << "5. Замовлення та оплати\n"
         << "0. Вихід\n"
-        << "-------------------------------------------------------------\n"
-        << YELLOW << "Оберіть пункт меню: " << RESET;
+        << "-------------------------------------------------------------\n";
+        UIConsoleColor::printTextUseColor("Оберіть пункт меню: ", UIConsoleColor::Color::Yellow);
 }
 
 void ShopUI::productsMenu() {
@@ -342,8 +388,8 @@ void ShopUI::productsMenu() {
         << "2. Видалити товар\n"
         << "3. Переглянути список товарів\n"
         << "0. Назад\n"
-        << "-------------------------------------------------------------\n"
-        << YELLOW << "Ваш вибір: " << RESET;
+        << "-------------------------------------------------------------\n";
+    UIConsoleColor::printTextUseColor("Ваш вибір: ", UIConsoleColor::Color::Yellow);
 }
 
 void ShopUI::categoriesMenu() {
@@ -352,8 +398,8 @@ void ShopUI::categoriesMenu() {
         << "2. Видалити категорію\n"
         << "3. Переглянути всі категорії\n"
         << "0. Назад\n"
-        << "-------------------------------------------------------------\n"
-        << YELLOW << "Ваш вибір: " << RESET;
+        << "-------------------------------------------------------------\n";
+    UIConsoleColor::printTextUseColor("Ваш вибір: ", UIConsoleColor::Color::Yellow);
 }
 
 void ShopUI::customersMenu() {
@@ -362,8 +408,8 @@ void ShopUI::customersMenu() {
         << "2. Видалити клієнта\n"
         << "3. Переглянути клієнтів\n"
         << "0. Назад\n"
-        << "-------------------------------------------------------------\n"
-        << YELLOW << "Ваш вибір: " << RESET;
+        << "-------------------------------------------------------------\n";
+    UIConsoleColor::printTextUseColor("Ваш вибір: ", UIConsoleColor::Color::Yellow);
 }
 
 void ShopUI::cartMenu() {
@@ -373,8 +419,8 @@ void ShopUI::cartMenu() {
         << "3. Переглянути вміст кошика\n"
         << "4. Розрахувати загальну вартість\n"
         << "0. Назад\n"
-        << "-------------------------------------------------------------\n"
-        << YELLOW << "Ваш вибір: " << RESET;
+        << "-------------------------------------------------------------\n";
+    UIConsoleColor::printTextUseColor("Ваш вибір: ", UIConsoleColor::Color::Yellow);
 }
 
 void ShopUI::ordersMenu() {
@@ -382,8 +428,8 @@ void ShopUI::ordersMenu() {
     std::cout << "1. Створити замовлення\n"
         << "2. Провести оплату\n"
         << "0. Назад\n"
-        << "-------------------------------------------------------------\n"
-        << YELLOW << "Ваш вибір: " << RESET;
+        << "-------------------------------------------------------------\n";
+    UIConsoleColor::printTextUseColor("Ваш вибір: ", UIConsoleColor::Color::Yellow);
 }
 
 void ShopUI::reportsMenu() {
@@ -391,8 +437,8 @@ void ShopUI::reportsMenu() {
     std::cout << "1. Звіт про продажі\n"
         << "2. Звіт про залишки\n"
         << "0. Назад\n"
-        << "-------------------------------------------------------------\n"
-        << YELLOW << "Ваш вибір: " << RESET;
+        << "-------------------------------------------------------------\n";
+    UIConsoleColor::printTextUseColor("Ваш вибір: ", UIConsoleColor::Color::Yellow);
 }
 
 void ShopUI::loyaltyMenu() {
@@ -401,16 +447,16 @@ void ShopUI::loyaltyMenu() {
         << "2. Використати бонуси\n"
         << "3. Перевірити баланс\n"
         << "0. Назад\n"
-        << "-------------------------------------------------------------\n"
-        << YELLOW << "Ваш вибір: " << RESET;
+        << "-------------------------------------------------------------\n";
+    UIConsoleColor::printTextUseColor("Ваш вибір: ", UIConsoleColor::Color::Yellow);
 }
 
 void ShopUI::recommendationMenu() {
     printHeader("СИСТЕМА РЕКОМЕНДАЦІЙ");
     std::cout << "1. Згенерувати рекомендації для клієнта\n"
         << "0. Назад\n"
-        << "-------------------------------------------------------------\n"
-        << YELLOW << "Ваш вибір: " << RESET;
+        << "-------------------------------------------------------------\n";
+    UIConsoleColor::printTextUseColor("Ваш вибір: ", UIConsoleColor::Color::Yellow);
 }
 
 void ShopUI::registerMenu()
@@ -419,6 +465,6 @@ void ShopUI::registerMenu()
     std::cout << "1. Реєстрація\n"
         << "2. Вхід\n"
         << "0. Вихід\n"
-        << "-------------------------------------------------------------\n"
-        << YELLOW << "Ваш вибір: " << RESET;
+        << "-------------------------------------------------------------\n";
+    UIConsoleColor::printTextUseColor("Ваш вибір: ", UIConsoleColor::Color::Yellow);
 }

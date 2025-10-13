@@ -1,16 +1,30 @@
 ﻿#include "exercise.h"
 #include "Security.h"
+#include "UIConsoleColor.h"
+#include <iostream>
+#include <iomanip>
+
 Exercise::Exercise() : Product()
-{type = " ";}
-Exercise::~Exercise(){}
+{
+    type = " ";
+}
+
+Exercise::~Exercise() {}
+
 void Exercise::GetInformationProduct() const noexcept
 {
-	Product::GetInformationProduct();
-	std::cout << "Тип: " << type << std::endl;
+    Product::GetInformationProduct();
+
+    UIConsoleColor::printTextUseColor("Тип зарядки: ", UIConsoleColor::Color::Cyan);
+    std::cout << type << "\n";
 }
+
 void Exercise::SetInformationProduct() noexcept
 {
-	Product::SetInformationProduct();
-	std::cout << "Введіть тип зарядки: ";
-	type = ConsoleHelper::readLine();
+    Product::SetInformationProduct();
+
+    UIConsoleColor::printTextUseColor("Введіть тип зарядки: ", UIConsoleColor::Color::Yellow);
+    type = ConsoleHelper::readLine();
+
+    UIConsoleColor::printTextUseColor("✅ Тип зарядки успішно додано!\n", UIConsoleColor::Color::Green);
 }
