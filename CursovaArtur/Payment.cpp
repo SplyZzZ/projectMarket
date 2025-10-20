@@ -3,14 +3,16 @@
 #include "UIConsoleColor.h"
 #include <thread>
 #include <iomanip>
+#include "Customer.h"
 #include <iostream>
+#include "Security.h"
 
 Payment::Payment() : transactionStatus(false), sum(0), paymentMethod(nullptr)
 {
     ID = ++Unik;
 }
 
-bool Payment::InitializePayment(std::shared_ptr<Order>& order) noexcept
+bool Payment::InitializePayment(std::shared_ptr<Order>& order, std::shared_ptr<Customer>& user) noexcept
 {
     UIConsoleColor::printTextUseColor("\n=============================================================\n", UIConsoleColor::Color::Cyan);
     UIConsoleColor::printTextUseColor("             СИСТЕМА ОБРОБКИ ПЛАТЕЖІВ\n", UIConsoleColor::Color::Cyan);
@@ -19,8 +21,40 @@ bool Payment::InitializePayment(std::shared_ptr<Order>& order) noexcept
     UIConsoleColor::printTextUseColor("Номер операції: ", UIConsoleColor::Color::Cyan);
     std::cout << ID << "\n";
 
-    UIConsoleColor::printTextUseColor("Сума до сплати: ", UIConsoleColor::Color::Cyan);
-    std::cout << "₴" << std::fixed << std::setprecision(2) << order->GetSum() << "\n\n";
+    UIConsoleColor::printTextUseColor("Сума до сплати: ", UIConsoleColor::Color::Cyan);\
+    sum = order->GetSum();
+    std::cout << "₴" << std::fixed << std::setprecision(2) << sum << "\n\n";
+
+
+    UIConsoleColor::printTextUseColor("Бажаєте викорситати бонусні бали?\n1 - Так\n2- Ні\n", UIConsoleColor::Color::Green);
+    size_t options = 0;
+    options = ConsoleHelper::readNumber(options);
+    if (options == 1)
+    {
+        int selection = 1;
+        while (selection == 1)
+        {
+            UIConsoleColor::printTextUseColor("Ваша кількість бонусних балів: ", UIConsoleColor::Color::Yellow);
+            size_t countUserPoints = user->bonusPoints.getPurchaseCount();
+            UIConsoleColor::printTextUseColor(std::to_string(countUserPoints), UIConsoleColor::Color::Yellow);
+            size_t tmp = 0;
+            UIConsoleColor::printTextUseColor("\nВведіть кількість бонусних балів які бажаєте потратити: ", UIConsoleColor::Color::Yellow);
+            tmp = ConsoleHelper::readNumber(tmp);
+            if (user->bonusPoints.removePurchase(tmp))
+            {
+                sum -= tmp;
+                 UIConsoleColor::printTextUseColor("\nСума до сплати: ", UIConsoleColor::Color::Cyan);
+                 std::cout << "₴" << std::fixed << std::setprecision(2) << sum << "\n\n";
+            }
+            else
+            {
+                UIConsoleColor::printTextUseColor("\nВи ввели не правильну кількість балів.\n", UIConsoleColor::Color::Red);
+                UIConsoleColor::printTextUseColor("Ви бажаєте повторити спробу?\n1 - Так\n2 - Ні\n", UIConsoleColor::Color::Yellow);
+                selection = ConsoleHelper::readNumber(selection);
+                
+            }
+        }
+    }
 
     UIConsoleColor::printTextUseColor("Оберіть спосіб оплати:\n", UIConsoleColor::Color::Yellow);
     std::cout << "  [1] 💳 Картка\n"
@@ -30,7 +64,7 @@ bool Payment::InitializePayment(std::shared_ptr<Order>& order) noexcept
 
     UIConsoleColor::printTextUseColor("Введіть номер варіанту: ", UIConsoleColor::Color::Yellow);
     size_t selection = 0;
-    std::cin >> selection;
+    selection = ConsoleHelper::readNumber(selection);
 
     switch (selection)
     {
@@ -50,12 +84,10 @@ bool Payment::InitializePayment(std::shared_ptr<Order>& order) noexcept
         UIConsoleColor::printTextUseColor("\n❌ Невірний вибір! Операцію скасовано.\n", UIConsoleColor::Color::Red);
         return false;
     }
-
-    sum = order->GetSum();
-    return approvePay(order);
+    return approvePay(order, user);
 }
 
-bool Payment::approvePay(std::shared_ptr<Order>& order)
+bool Payment::approvePay(std::shared_ptr<Order>& order, std::shared_ptr<Customer>& user)
 {
     UIConsoleColor::printTextUseColor("\n-------------------------------------------------------------\n", UIConsoleColor::Color::Cyan);
     UIConsoleColor::printTextUseColor("         ПІДТВЕРДЖЕННЯ ОПЛАТИ ЗАМОВЛЕННЯ\n", UIConsoleColor::Color::Cyan);
@@ -99,7 +131,9 @@ bool Payment::approvePay(std::shared_ptr<Order>& order)
 
     if (paymentMethod)
     {
+        
         UIConsoleColor::printTextUseColor("\n✅ Оплату підтверджено!\n", UIConsoleColor::Color::Green);
+        user->bonusPoints.addPurchase(order->GetSum() / 10);
         paymentMethod->payment();
     }
     else

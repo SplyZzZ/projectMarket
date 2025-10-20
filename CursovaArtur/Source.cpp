@@ -248,6 +248,7 @@ int main()
                 }
                 case 1:
                 {
+                
                     std::cout << store.getUser()->getName();
                     if (store.getUser()->customerCart.AddProduct(store.returnMapCategories()))
                     {
@@ -323,11 +324,12 @@ int main()
                 case 2:
                 {
                     size_t selection = 0;
-                    store.getUser()->getUserOrderList();
+                    std::shared_ptr<Customer>  user = store.getUser();
+                    user->getUserOrderList();
                     UIConsoleColor::printTextUseColor("Введіть ID замовлення: ",UIConsoleColor::Color::Yellow);
                     ConsoleHelper::readNumber(selection);
-                    auto orderUser = store.getUser()->getOrder(selection);
-                    if (store.getUser()->getOrder(selection)->paymentOrder.InitializePayment(orderUser))
+                    auto orderUser = user->getOrder(selection);
+                    if (user->getOrder(selection)->paymentOrder.InitializePayment(orderUser, user))
                     {
                         UIConsoleColor::printTextUseColor("✅ Оплату виконано успішно!\n", UIConsoleColor::Color::Green);
                     }

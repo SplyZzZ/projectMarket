@@ -2,12 +2,13 @@
 #include <array>
 #include "Category.h"
 #include "Cart.h"
+#include "LoyaltyProgram.h"
 #include "Observer.h"
 class Order;
 class Customer : public IObserver
 {
 public:
-	Cart customerCart;
+	
 	Customer(std::string&& name, std::string&& contactInformation);
 	Customer(std::string& name, std::string& contactInformation, std::string& password);
 	std::pair<int, std::shared_ptr<Order>> AddOrder(std::shared_ptr<Customer>& user);
@@ -19,6 +20,8 @@ public:
 	std::string getName() noexcept;
 	std::string getHash() const noexcept;
 	void UpDate(size_t status, int ID) override;
+	Cart customerCart;
+	LoyaltyProgram bonusPoints;
 private:
 	static int Unic;
 	int ID;

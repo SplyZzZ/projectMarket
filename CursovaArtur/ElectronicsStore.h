@@ -3,6 +3,7 @@
 #include "Customer.h"
 #include "Order.h"
 #include "Observer.h"
+#include "Reports.h"
 class ElectronicsStore
 {
 public:
@@ -20,10 +21,10 @@ public:
 	std::shared_ptr<Customer> getCustomer(int ID) noexcept;
 	bool loginToStore(std::string& name, std::string& password);
 	std::shared_ptr<Customer> getUser() noexcept;
- std::unordered_map<std::string, std::shared_ptr<Category>>& returnMapCategories();
+    std::unordered_map<std::string, std::shared_ptr<Category>>& returnMapCategories();
 	void addGlobalOrders(std::pair<int, std::shared_ptr<Order>>& other);
 	void PrintTypeProduct() const noexcept;
-	void SetUsers();
+	void createReport();
 private:
 	std::unordered_map<int, std::shared_ptr<Customer>> customers;
 	std::unordered_map <std::string, int> customersTOid;

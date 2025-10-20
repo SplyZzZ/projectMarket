@@ -36,6 +36,11 @@ std::string Category::getName() const noexcept
     return name;
 }
 
+const std::unordered_map<int, std::shared_ptr<Product>>& Category::returnProductMap() const noexcept
+{
+    return productMap;
+}
+
 int Category::Unik = 0;
 
 

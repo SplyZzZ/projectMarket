@@ -147,6 +147,7 @@
     <ClCompile Include="exercise.cpp" />
     <ClCompile Include="Factory.cpp" />
     <ClCompile Include="FleshDrive.cpp" />
+    <ClCompile Include="LoyaltyProgram.cpp" />
     <ClCompile Include="Order.cpp" />
     <ClCompile Include="Payment.cpp" />
     <ClCompile Include="Phone.cpp" />
@@ -165,11 +166,13 @@
     <ClInclude Include="exercise.h" />
     <ClInclude Include="Factory.h" />
     <ClInclude Include="FleshDrive.h" />
+    <ClInclude Include="LoyaltyProgram.h" />
     <ClInclude Include="Observer.h" />
     <ClInclude Include="Order.h" />
     <ClInclude Include="Payment.h" />
     <ClInclude Include="Phone.h" />
     <ClInclude Include="Product.h" />
+    <ClInclude Include="Reports.h" />
     <ClInclude Include="Security.h" />
     <ClInclude Include="strategyPayment.h" />
     <ClInclude Include="TV.h" />

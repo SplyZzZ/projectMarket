@@ -62,6 +62,11 @@ double Product::GetPrice() const noexcept
     return price;
 }
 
+size_t Product::GetSize() const noexcept
+{
+    return size;
+}
+
 std::string Product::GetName() const noexcept
 {
     return name;

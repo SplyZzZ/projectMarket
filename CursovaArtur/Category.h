@@ -11,6 +11,7 @@ public:
 	void GetListProduct() const noexcept;
 	std::shared_ptr<Product> GetProduct(int ID)  noexcept;
 	std::string getName() const noexcept;
+	const std::unordered_map<int, std::shared_ptr<Product>>& returnProductMap() const noexcept;
 private:
 	int ID;
 	std::string name;

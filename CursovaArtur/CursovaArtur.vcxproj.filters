@@ -63,6 +63,9 @@
     <ClCompile Include="UIConsoleColor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LoyaltyProgram.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Product.h">
@@ -111,6 +114,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UIConsoleColor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LoyaltyProgram.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Reports.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
